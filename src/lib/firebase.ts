@@ -9,7 +9,11 @@ if (!firebase.apps.length) {
 }
 
 export const getShops = async () => {
-  const snap = await firebase.firestore().collection('shops').get();
-  const shops = snap.docs.map(doc => doc.data() as Shop);
-  return shops;
+  const snap = await firebase
+    .firestore()
+    .collection('shops')
+    .orderBy('score', 'desc')
+    .get();
+    const shops = snap.docs.map(doc => doc.data() as Shop);
+    return shops;
 }
