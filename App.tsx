@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View, FlatList } from 'react-native';
 
 import { getShops } from './src/lib/firebase';
 import { Shop } from './src/services/models/shop';
@@ -23,7 +23,13 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      {shopItems}
+      <FlatList
+        data={shops}
+        key={'#'}
+        renderItem={({ item }: { item: Shop }) => <ShopReviewItem shop={item} />}
+        keyExtractor={(item, index) => index.toString()}
+        numColumns={2}
+      />
     </View>
   );
 }
