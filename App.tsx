@@ -1,19 +1,10 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import * as firebase from 'firebase';
-import 'firebase/firestore';
 
-import { firebaseConfig } from './firebase-config';
+/* lib */
+import { getShops } from './src/lib/firebase';
 
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-}
-
-type Shop = {
-  name: string;
-  place: string;
-};
+import { Shop } from './src/services/models/shop';
 
 export default function App() {
   const [shops, setShops] = useState<Shop[]>([]);
@@ -23,8 +14,7 @@ export default function App() {
   }, []);
 
   const getFirebaseItems = async () => {
-    const snap = await firebase.firestore().collection('shops').get();
-    const shops = snap.docs.map(doc => doc.data() as Shop);
+    const shops = await getShops();
     setShops(shops);
   }
 
