@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { View, StyleSheet, Image, Text, Dimensions } from 'react-native';
 
 import { Shop } from '../services/models/shop';
+import Stars from './Stars';
 
 interface Props {
   shop: Shop;
@@ -20,6 +21,7 @@ const ShopReviewItem: FC<Props> = ({ shop }) => {
       <Image source={{ uri: imageUrl }} style={styles.image} />
       <Text style={styles.nameText}>{name}</Text>
       <Text style={styles.placeText}>{place}</Text>
+      <Stars score={score} />
     </View>
   );
 }
