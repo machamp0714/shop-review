@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, FlatList } from 'react-native';
+import { StyleSheet, View, FlatList, SafeAreaView } from 'react-native';
 
 import { getShops } from './src/lib/firebase';
 import { Shop } from './src/services/models/shop';
@@ -22,7 +22,7 @@ export default function App() {
   ));
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <FlatList
         data={shops}
         key={'#'}
@@ -30,7 +30,7 @@ export default function App() {
         keyExtractor={(item, index) => index.toString()}
         numColumns={2}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 
