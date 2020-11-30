@@ -1,11 +1,11 @@
 import * as firebase from 'firebase';
 import 'firebase/firestore';
+import Constants from 'expo-constants';
 
-import { firebaseConfig } from '../../firebase-config';
 import { Shop } from '../services/models/shop';
 
 if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
+  firebase.initializeApp(Constants.manifest.extra.firebase);
 }
 
 export const getShops = async () => {
