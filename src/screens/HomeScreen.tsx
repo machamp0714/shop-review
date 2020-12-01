@@ -1,11 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, FlatList, SafeAreaView } from 'react-native';
+import { StyleSheet, FlatList, SafeAreaView } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 import { getShops } from '../lib/firebase';
 import { Shop } from '../services/models/shop';
 import ShopReviewItem from '../components/ShopReviewItem';
+import { HomeStackParamList } from '../navigation/HomeStackNavigator';
 
-const HomeScreen = () => {
+type HomeScreenNavigationProp = StackNavigationProp<HomeStackParamList, 'Home'>
+
+interface Props {
+  navigation: HomeScreenNavigationProp;
+}
+
+const HomeScreen = ({ navigation }: Props) => {
   const [shops, setShops] = useState<Shop[]>([]);
 
   useEffect(() => {
@@ -17,16 +25,16 @@ const HomeScreen = () => {
     setShops(shops);
   }
 
-  const shopItems = shops.map((shop, index) => (
-    <ShopReviewItem shop={shop} key={index.toString()} />
-  ));
+  const onPressShop = () => {
+    navigation.navigate('Shop');
+  }
 
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
         data={shops}
         key={'#'}
-        renderItem={({ item }: { item: Shop }) => <ShopReviewItem shop={item} />}
+        renderItem={({ item }: { item: Shop }) => <ShopReviewItem shop={item} onPress={onPressShop} />}
         keyExtractor={(item, index) => index.toString()}
         numColumns={2}
       />
