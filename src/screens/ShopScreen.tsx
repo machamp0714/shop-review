@@ -1,5 +1,7 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { StyleSheet, SafeAreaView, Text } from 'react-native';
+
+import ShopDetail from '../components/ShopDetail';
 
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../services/navigation';
@@ -13,9 +15,13 @@ type Props = {
 const ShopScreen: FC<Props> = ({ navigation, route }) => {
   const { shop } = route.params;
 
+  useEffect(() => {
+    navigation.setOptions({ title: shop.name })
+  }, [shop])
+
   return (
     <SafeAreaView style={styles.container}>
-      <Text>Shop Screen</Text>
+      <ShopDetail shop={shop} />
     </SafeAreaView>
   )
 }

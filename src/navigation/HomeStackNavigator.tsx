@@ -10,7 +10,11 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 const HomeScreenNavigator = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerTintColor: '#000'
+      }}
+    >
       <Stack.Screen
         name='Home'
         component={HomeScreen}
