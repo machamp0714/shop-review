@@ -23,7 +23,6 @@ const HomeScreenNavigator = () => {
       <Stack.Screen
         name="Shop"
         component={ShopScreen}
-
       />
     </Stack.Navigator>
   )
