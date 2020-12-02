@@ -5,12 +5,10 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { getShops } from '../lib/firebase';
 import { Shop } from '../services/models/shop';
 import ShopReviewItem from '../components/ShopReviewItem';
-import { HomeStackParamList } from '../navigation/HomeStackNavigator';
-
-type HomeScreenNavigationProp = StackNavigationProp<HomeStackParamList, 'Home'>
+import { RootStackParamList } from '../services/navigation';
 
 interface Props {
-  navigation: HomeScreenNavigationProp;
+  navigation: StackNavigationProp<RootStackParamList, 'Home'>;
 }
 
 const HomeScreen = ({ navigation }: Props) => {
@@ -25,8 +23,8 @@ const HomeScreen = ({ navigation }: Props) => {
     setShops(shops);
   }
 
-  const onPressShop = () => {
-    navigation.navigate('Shop');
+  const onPressShop = (shop: Shop) => {
+    navigation.navigate('Shop', { shop });
   }
 
   return (
@@ -34,7 +32,7 @@ const HomeScreen = ({ navigation }: Props) => {
       <FlatList
         data={shops}
         key={'#'}
-        renderItem={({ item }: { item: Shop }) => <ShopReviewItem shop={item} onPress={onPressShop} />}
+        renderItem={({ item }: { item: Shop }) => <ShopReviewItem shop={item} onPress={() => onPressShop(item)} />}
         keyExtractor={(item, index) => index.toString()}
         numColumns={2}
       />

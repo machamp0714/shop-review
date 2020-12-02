@@ -4,12 +4,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../screens/HomeScreen';
 import ShopScreen from '../screens/ShopScreen';
 
-export type HomeStackParamList = {
-  Home: undefined;
-  Shop: undefined;
-}
+import { RootStackParamList } from '../services/navigation';
 
-const Stack = createStackNavigator<HomeStackParamList>();
+const Stack = createStackNavigator<RootStackParamList>();
 
 const HomeScreenNavigator = () => {
   return (
