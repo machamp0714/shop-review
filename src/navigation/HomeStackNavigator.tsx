@@ -5,10 +5,12 @@ import HomeScreen from '../screens/HomeScreen';
 import ShopScreen from '../screens/ShopScreen';
 
 import { RootStackParamList } from '../services/navigation';
+import CreateReviewScreen from '../screens/CreateReviewScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
+const RootStack = createStackNavigator<RootStackParamList>();
 
-const HomeScreenNavigator = () => {
+const MainStack = () => {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -28,4 +30,17 @@ const HomeScreenNavigator = () => {
   )
 }
 
-export default HomeScreenNavigator;
+const HomeStackNavigator = () => (
+  <RootStack.Navigator mode='modal'>
+    <RootStack.Screen
+      name='Home'
+      component={MainStack}
+      options={{
+        headerShown: false
+      }}
+    />
+    <RootStack.Screen name='CreateReview' component={CreateReviewScreen} />
+  </RootStack.Navigator>
+)
+
+export default HomeStackNavigator;
