@@ -1,5 +1,7 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
+
+import IconButton from '../components/IconButton';
 
 import { RootStackParamList } from '../services/navigation';
 import { RouteProp } from '@react-navigation/native';
@@ -12,6 +14,13 @@ interface Props {
 
 const CreateReviewScreen: FC<Props> = ({ navigation, route }) => {
   const { shop } = route.params;
+
+  useEffect(() => {
+    navigation.setOptions({
+      title: shop.name,
+      headerLeft: () => <IconButton name='x' onPress={() => navigation.goBack()} />
+    })
+  }, [shop])
 
   return (
     <View style={styles.container}>
