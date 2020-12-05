@@ -1,7 +1,9 @@
 import React, { FC, useState, useContext } from 'react';
 import { StyleSheet, SafeAreaView } from 'react-native';
+import firebase from 'firebase';
 
 import { UserContext } from '../contexts/userContexts';
+import { updateUser } from '../lib/firebase';
 
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
@@ -16,13 +18,21 @@ interface Props {
 }
 
 const UserScreen: FC<Props> = ({ navigation, route }) => {
-  const { user } = useContext(UserContext);
-  const [name, setName] = useState<string>(user!.name);
+  const { user, setUser } = useContext(UserContext);
+  if (!user) throw new Error('user not authentication!');
+
+  const [name, setName] = useState<string>(user.name);
+
+  const onSubmit = async () => {
+    const updatedAt = firebase.firestore.Timestamp.now();
+    await updateUser(user.id!, { name, updatedAt }) // Argument of type 'string | undefined' is not assignable to parameter of type 'string'.
+    setUser({...user, name, updatedAt})
+  }
 
   return (
     <SafeAreaView style={styles.container}>
       <Form onChangeText={(text) => setName(text)} value={name} label='名前' />
-      <Button text='保存する' onPress={() => {}} />
+      <Button text='保存する' onPress={onSubmit} />
     </SafeAreaView>
   );
 }
