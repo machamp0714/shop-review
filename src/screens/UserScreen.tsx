@@ -11,6 +11,7 @@ import { RootStackParamList } from '../services/navigation';
 
 import Form from '../components/Form';
 import Button from '../components/Button';
+import Loading from '../components/Loading';
 
 interface Props {
   navigation: StackNavigationProp<RootStackParamList, 'User'>;
@@ -22,17 +23,21 @@ const UserScreen: FC<Props> = ({ navigation, route }) => {
   if (!user) throw new Error('user not authentication!');
 
   const [name, setName] = useState<string>(user.name);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const onSubmit = async () => {
+    setLoading(true)
     const updatedAt = firebase.firestore.Timestamp.now();
     await updateUser(user.id!, { name, updatedAt }) // Argument of type 'string | undefined' is not assignable to parameter of type 'string'.
-    setUser({...user, name, updatedAt})
+    setUser({ ...user, name, updatedAt });
+    setLoading(false)
   }
 
   return (
     <SafeAreaView style={styles.container}>
       <Form onChangeText={(text) => setName(text)} value={name} label='名前' />
       <Button text='保存する' onPress={onSubmit} />
+      <Loading visible={loading} />
     </SafeAreaView>
   );
 }
