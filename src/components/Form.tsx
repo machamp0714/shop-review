@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   label: {
+    color: '#999',
     fontWeight: 'bold'
   }
 });
