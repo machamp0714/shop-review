@@ -27,13 +27,13 @@ export const signin = async () => {
   if (!userDoc.exists) {
     await firebase.firestore().collection('users').doc(uid).set(initUser);
     return {
+      id: uid,
       ...initUser,
-      id: uid
-    };
+    } as User;
   } else {
     return {
       id: uid,
       ...userDoc.data()
-    };
+    } as User;
   }
 };

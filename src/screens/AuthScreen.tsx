@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useContext } from 'react';
 import {
   StyleSheet,
   SafeAreaView,
@@ -6,13 +6,16 @@ import {
   Text
 } from 'react-native';
 
+import { UserContext } from '../contexts/userContexts';
 import { signin } from '../lib/firebase';
 
 const AuthScreen: FC = () => {
+  const { setUser } = useContext(UserContext);
+
   useEffect(() => {
     const fetchUser = async () => {
       const user = await signin();
-      console.log(user);
+      setUser(user);
     }
     fetchUser();
   }, []);
