@@ -14,7 +14,7 @@ const StarInput: FC<Props> = ({
   starSize,
   onChangeStar
 }) => {
-  const starStyle = [styles.star, starSize && { fontSize: starSize }];
+  const starStyle = [styles.star, { fontSize: starSize }];
 
   const stars = [1, 2, 3, 4, 5].map((starCount) => (
     <TouchableOpacity
