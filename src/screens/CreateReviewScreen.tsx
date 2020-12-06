@@ -14,6 +14,7 @@ import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import { addReview } from '../lib/firebase';
+import { pickImage } from '../lib/image-picker';
 
 interface Props {
   navigation: StackNavigationProp<RootStackParamList, 'CreateReview'>;
@@ -24,6 +25,7 @@ const CreateReviewScreen: FC<Props> = ({ navigation, route }) => {
   const { shop } = route.params;
   const [text, setText] = useState<string>('');
   const [score, setScore] = useState<number>(3);
+  const [imageUri, setImageUri] = useState<string>('');
   const { user } = useContext(UserContext);
   if (!user) throw new Error('no authenticate!');
 
@@ -46,6 +48,11 @@ const CreateReviewScreen: FC<Props> = ({ navigation, route }) => {
     await addReview(shop.id!, review)
   }
 
+  const onPickImage = async () => {
+    const uri = await pickImage();
+    setImageUri(uri);
+  }
+
   useEffect(() => {
     navigation.setOptions({
       title: shop.name,
@@ -63,7 +70,7 @@ const CreateReviewScreen: FC<Props> = ({ navigation, route }) => {
         onChangeText={(text) => setText(text)}
       />
       <View style={styles.photoContainer}>
-        <IconButton name='camera' color='#ccc' onPress={() => {}} />
+        <IconButton name='camera' color='#ccc' onPress={onPickImage} />
       </View>
       <Button text='投稿する' onPress={onSubmit} />
     </SafeAreaView>
