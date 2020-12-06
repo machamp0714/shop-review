@@ -3,6 +3,8 @@ import { StyleSheet, View, Text } from 'react-native';
 
 import IconButton from '../components/IconButton';
 import TextArea from '../components/TextArea';
+import StarInput from '../components/StartInput';
+import Button from '../components/Button';
 
 import { RootStackParamList } from '../services/navigation';
 import { RouteProp } from '@react-navigation/native';
@@ -16,6 +18,7 @@ interface Props {
 const CreateReviewScreen: FC<Props> = ({ navigation, route }) => {
   const { shop } = route.params;
   const [text, setText] = useState<string>('');
+  const [score, setScore] = useState<number>(3);
 
   useEffect(() => {
     navigation.setOptions({
@@ -26,12 +29,14 @@ const CreateReviewScreen: FC<Props> = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
+      <StarInput score={score} onChangeStar={(value) => setScore(value)} />
       <TextArea
         label='レビュー'
         value={text}
         placeholder='レビューを入力してください'
         onChangeText={(text) => setText(text)}
       />
+      <Button text='投稿する' onPress={() => {}} />
     </View>
   )
 }
