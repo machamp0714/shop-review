@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState, useContext } from 'react';
-import { StyleSheet, SafeAreaView, View } from 'react-native';
+import { StyleSheet, SafeAreaView, View, Image } from 'react-native';
 import firebase from 'firebase';
 
 import { UserContext } from '../contexts/userContexts';
@@ -13,8 +13,9 @@ import { RootStackParamList } from '../services/navigation';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
-import { addReview } from '../lib/firebase';
+import { createReviewRef } from '../lib/firebase';
 import { pickImage } from '../lib/image-picker';
+import { getExtension } from '../utils/file';
 
 interface Props {
   navigation: StackNavigationProp<RootStackParamList, 'CreateReview'>;
@@ -30,6 +31,11 @@ const CreateReviewScreen: FC<Props> = ({ navigation, route }) => {
   if (!user) throw new Error('no authenticate!');
 
   const onSubmit = async () => {
+    const reviewRef = await createReviewRef(shop.id!);
+
+    const ext = getExtension(imageUri);
+    const storagePath = `reviews/${reviewRef.id}.${ext}`;
+
     const review = {
       user: {
         id: user.id!,
@@ -44,8 +50,6 @@ const CreateReviewScreen: FC<Props> = ({ navigation, route }) => {
       createdAt: firebase.firestore.Timestamp.now(),
       updatedAt: firebase.firestore.Timestamp.now()
     }
-
-    await addReview(shop.id!, review)
   }
 
   const onPickImage = async () => {
@@ -71,6 +75,7 @@ const CreateReviewScreen: FC<Props> = ({ navigation, route }) => {
       />
       <View style={styles.photoContainer}>
         <IconButton name='camera' color='#ccc' onPress={onPickImage} />
+        {!!imageUri && <Image source={{uri: imageUri}} style={styles.image} />}
       </View>
       <Button text='投稿する' onPress={onSubmit} />
     </SafeAreaView>
@@ -84,6 +89,10 @@ const styles = StyleSheet.create({
   },
   photoContainer: {
     margin: 8
+  },
+  image: {
+    width: 100,
+    height: 100
   }
 });
 
