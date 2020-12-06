@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState, useContext } from 'react';
-import { StyleSheet, SafeAreaView, View, Image } from 'react-native';
+import { StyleSheet, SafeAreaView, View, Image, Alert } from 'react-native';
 import firebase from 'firebase';
 
 import { UserContext } from '../contexts/userContexts';
@@ -33,6 +33,11 @@ const CreateReviewScreen: FC<Props> = ({ navigation, route }) => {
   if (!user) throw new Error('no authenticate!');
 
   const onSubmit = async () => {
+    if (!text || !imageUri) {
+      Alert.alert('レビューまたは画像がありません');
+      return;
+    }
+
     setLoading(true);
     const reviewRef = await createReviewRef(shop.id!);
 
