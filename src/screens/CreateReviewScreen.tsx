@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState, useContext } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, SafeAreaView, View } from 'react-native';
 import firebase from 'firebase';
 
 import { UserContext } from '../contexts/userContexts';
@@ -54,7 +54,7 @@ const CreateReviewScreen: FC<Props> = ({ navigation, route }) => {
   }, [shop])
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <StarInput score={score} onChangeStar={(value) => setScore(value)} />
       <TextArea
         label='レビュー'
@@ -62,8 +62,11 @@ const CreateReviewScreen: FC<Props> = ({ navigation, route }) => {
         placeholder='レビューを入力してください'
         onChangeText={(text) => setText(text)}
       />
+      <View style={styles.photoContainer}>
+        <IconButton name='camera' color='#ccc' onPress={() => {}} />
+      </View>
       <Button text='投稿する' onPress={onSubmit} />
-    </View>
+    </SafeAreaView>
   )
 }
 
@@ -72,6 +75,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
+  photoContainer: {
+    margin: 8
+  }
 });
 
 export default CreateReviewScreen;
