@@ -8,6 +8,7 @@ import IconButton from '../components/IconButton';
 import TextArea from '../components/TextArea';
 import StarInput from '../components/StartInput';
 import Button from '../components/Button';
+import Loading from '../components/Loading';
 
 import { RootStackParamList } from '../services/navigation';
 import { RouteProp } from '@react-navigation/native';
@@ -27,10 +28,12 @@ const CreateReviewScreen: FC<Props> = ({ navigation, route }) => {
   const [text, setText] = useState<string>('');
   const [score, setScore] = useState<number>(3);
   const [imageUri, setImageUri] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
   const { user } = useContext(UserContext);
   if (!user) throw new Error('no authenticate!');
 
   const onSubmit = async () => {
+    setLoading(true);
     const reviewRef = await createReviewRef(shop.id!);
 
     const ext = getExtension(imageUri);
@@ -53,6 +56,8 @@ const CreateReviewScreen: FC<Props> = ({ navigation, route }) => {
       updatedAt: firebase.firestore.Timestamp.now()
     };
     await reviewRef.set(review);
+    setLoading(false);
+    navigation.goBack();
   }
 
   const onPickImage = async () => {
@@ -81,6 +86,7 @@ const CreateReviewScreen: FC<Props> = ({ navigation, route }) => {
         {!!imageUri && <Image source={{uri: imageUri}} style={styles.image} />}
       </View>
       <Button text='投稿する' onPress={onSubmit} />
+      <Loading visible={loading} />
     </SafeAreaView>
   )
 }
