@@ -39,7 +39,7 @@ const CreateReviewScreen: FC<Props> = ({ navigation, route }) => {
     }
 
     setLoading(true);
-    const reviewRef = await createReviewRef(shop.id!);
+    const reviewRef = await createReviewRef(shop.id as string);
 
     const ext = getExtension(imageUri);
     const storagePath = `reviews/${reviewRef.id}.${ext}`;
@@ -67,7 +67,7 @@ const CreateReviewScreen: FC<Props> = ({ navigation, route }) => {
 
   const onPickImage = async () => {
     const uri = await pickImage();
-    setImageUri(uri);
+    setImageUri(uri as string);
   }
 
   useEffect(() => {
