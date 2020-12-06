@@ -13,7 +13,7 @@ import { RootStackParamList } from '../services/navigation';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
-import { createReviewRef } from '../lib/firebase';
+import { createReviewRef, uploadImage } from '../lib/firebase';
 import { pickImage } from '../lib/image-picker';
 import { getExtension } from '../utils/file';
 
@@ -35,6 +35,7 @@ const CreateReviewScreen: FC<Props> = ({ navigation, route }) => {
 
     const ext = getExtension(imageUri);
     const storagePath = `reviews/${reviewRef.id}.${ext}`;
+    const downloadUrl = await uploadImage(imageUri, storagePath);
 
     const review = {
       user: {
@@ -47,9 +48,11 @@ const CreateReviewScreen: FC<Props> = ({ navigation, route }) => {
       },
       text: text,
       score: score,
+      imageUrl: downloadUrl,
       createdAt: firebase.firestore.Timestamp.now(),
       updatedAt: firebase.firestore.Timestamp.now()
-    }
+    };
+    await reviewRef.set(review);
   }
 
   const onPickImage = async () => {
