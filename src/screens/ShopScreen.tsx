@@ -1,8 +1,9 @@
 import React, { FC, useState, useEffect } from 'react';
-import { StyleSheet, SafeAreaView } from 'react-native';
+import { StyleSheet, SafeAreaView, FlatList } from 'react-native';
 
 import ShopDetail from '../components/ShopDetail';
 import FloatingActionButton from '../components/FloatingActionButton';
+import ReviewItem from '../components/ReviewItem';
 
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../services/navigation';
@@ -32,7 +33,12 @@ const ShopScreen: FC<Props> = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ShopDetail shop={shop} />
+      <FlatList
+        ListHeaderComponent={<ShopDetail shop={shop} />}
+        data={reviews}
+        renderItem={({ item }) => <ReviewItem review={item} />}
+        keyExtractor={(item) => item.id!}
+      />
       <FloatingActionButton
         iconName='plus'
         onPress={() => navigation.navigate('CreateReview', {shop})}
