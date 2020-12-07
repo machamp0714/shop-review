@@ -18,7 +18,20 @@ export const getShops = async () => {
     .orderBy('score', 'desc')
     .get();
   const shops = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }) as Shop);
-    return shops;
+  return shops;
+}
+
+export const getReviews = async (shopId: string) => {
+  const snap = await firebase
+    .firestore()
+    .collection('shops')
+    .doc(shopId)
+    .collection('reviews')
+    .orderBy('createdAt', 'desc')
+    .get()
+
+  return snap
+    .docs.map(doc => ({ id: doc.id, ...doc.data() } as Review));
 }
 
 export const signin = async () => {
