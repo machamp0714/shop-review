@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useState, useEffect, useContext } from 'react';
 import { StyleSheet, SafeAreaView, FlatList } from 'react-native';
 
 import ShopDetail from '../components/ShopDetail';
@@ -11,6 +11,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 
 import { getReviews } from '../lib/firebase';
 import { Review } from '../services/models/review';
+import { ReviewsContext } from '../contexts/reviewsContext';
 
 type Props = {
   navigation: StackNavigationProp<RootStackParamList, 'Shop'>;
@@ -19,7 +20,7 @@ type Props = {
 
 const ShopScreen: FC<Props> = ({ navigation, route }) => {
   const { shop } = route.params;
-  const [reviews, setReviews] = useState<Review[]>([]);
+  const { reviews, setReviews } = useContext(ReviewsContext);
 
   useEffect(() => {
     navigation.setOptions({ title: shop.name })

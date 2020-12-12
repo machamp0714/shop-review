@@ -3,6 +3,7 @@ import { StyleSheet, SafeAreaView, View, Image, Alert } from 'react-native';
 import firebase from 'firebase';
 
 import { UserContext } from '../contexts/userContexts';
+import { ReviewsContext } from '../contexts/reviewsContext';
 
 import IconButton from '../components/IconButton';
 import TextArea from '../components/TextArea';
@@ -30,6 +31,8 @@ const CreateReviewScreen: FC<Props> = ({ navigation, route }) => {
   const [imageUri, setImageUri] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const { user } = useContext(UserContext);
+  const { reviews, setReviews } = useContext(ReviewsContext);
+
   if (!user) throw new Error('no authenticate!');
 
   const onSubmit = async () => {
@@ -46,6 +49,7 @@ const CreateReviewScreen: FC<Props> = ({ navigation, route }) => {
     const downloadUrl = await uploadImage(imageUri, storagePath);
 
     const review = {
+      id: reviewRef.id,
       user: {
         id: user.id!,
         name: user.name
@@ -61,6 +65,7 @@ const CreateReviewScreen: FC<Props> = ({ navigation, route }) => {
       updatedAt: firebase.firestore.Timestamp.now()
     };
     await reviewRef.set(review);
+    setReviews([...reviews, review]);
     setLoading(false);
     navigation.goBack();
   }
